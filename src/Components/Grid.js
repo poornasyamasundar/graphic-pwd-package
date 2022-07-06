@@ -5,31 +5,35 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import ButtonBase from "@mui/material/ButtonBase";
 import ImageStack from "./imageStack";
-import shajs from 'sha.js';
+import shajs from "sha.js";
 
 function shuffle(array) {
   array.sort(() => Math.random() - 0.5);
 }
 
-export default function TitlebarGridList({ grid_size, max_len, setPassword, setLen }) {
+export default function TitlebarGridList({
+  grid_size,
+  max_len,
+  setPassword,
+  setLen,
+}) {
   grid_size = Math.max(grid_size, 3);
   grid_size = Math.min(grid_size, 7);
   const [currentPass, setCurrentPass] = useState([]);
   const [images, setImages] = useState([]);
   const [passwordString, setPasswordString] = useState("");
 
-  useEffect(async () =>
-  {
+  useEffect(async () => {
     let data = {
-      "grid_size": grid_size,
+      grid_size: grid_size,
     };
     let url = "https://graphic-pswd-auth.herokuapp.com/get-images";
     let response = await fetch(url, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
     });
 
     response = await response.json();
@@ -67,7 +71,7 @@ export default function TitlebarGridList({ grid_size, max_len, setPassword, setL
   };
 
   const onGenerate = () => {
-    let hash = shajs('sha256').update(passwordString).digest('hex');
+    let hash = shajs("sha256").update(passwordString).digest("hex");
     setLen(passwordString.length);
     setPassword(hash);
     setCurrentPass([]);
@@ -108,11 +112,8 @@ export default function TitlebarGridList({ grid_size, max_len, setPassword, setL
       >
         <ImageList rowHeight={80} gap={2} cols={grid_size}>
           {images.map((image) => (
-            <ButtonBase key = {image.Id}>
-              <ImageListItem
-                cols={1}
-                onClick={() => addImage(image)}
-              >
+            <ButtonBase key={image.Id}>
+              <ImageListItem cols={1} onClick={() => addImage(image)}>
                 <div>
                   <img
                     src={image.img}
